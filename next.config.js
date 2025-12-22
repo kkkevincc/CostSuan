@@ -11,8 +11,8 @@ const nextConfig = {
     // Add trailing slash for GitHub Pages
     trailingSlash: true,
 
-    // Base path for GitHub Pages (change to your repo name)
-    // basePath: '/Gemini-Cost',
+    // Base path for GitHub Pages
+    basePath: '/CostSuan',
 
     reactStrictMode: true,
 };
