@@ -1,0 +1,248 @@
+.detailContainer {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 32px;
+    height: 100%;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 12px 0;
+    letter-spacing: -0.5px;
+}
+
+.totalPrice {
+    font-size: 34px;
+    font-weight: 600;
+    color: #6ee7b7;
+    letter-spacing: -0.5px;
+}
+
+.description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0 0 28px 0;
+}
+
+.itemsList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.2s ease;
+}
+
+.item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.itemHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+}
+
+.itemName {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.itemValue {
+    font-size: 20px;
+    font-weight: 600;
+    color: #6ee7b7;
+    letter-spacing: -0.3px;
+}
+
+.progressBar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progressFill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px currentColor;
+}
+
+.itemFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.percentage {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.itemDesc {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    flex: 1;
+    text-align: right;
+}
+
+.subItems {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.subItem {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px 0;
+}
+
+.subItemHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    transition: background 0.2s ease;
+}
+
+.subItemHeader:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.subItemName {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.subItemValue {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.subItemPrice {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.subItemPercentage {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    min-width: 45px;
+    text-align: right;
+}
+
+.subItemDesc {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    padding: 6px 14px;
+    line-height: 1.5;
+}
+
+/* Empty State */
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 40px;
+    text-align: center;
+}
+
+.emptyIcon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+.emptyTitle {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 12px 0;
+}
+
+.emptyText {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 280px;
+}
+
+@media (max-width: 768px) {
+    .detailContainer {
+        padding: 24px;
+        border-radius: 16px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .totalPrice {
+        font-size: 28px;
+    }
+
+    .item {
+        padding: 16px;
+    }
+
+    .itemName {
+        font-size: 16px;
+    }
+
+    .itemValue {
+        font-size: 18px;
+    }
+}

@@ -1,0 +1,110 @@
+.panel {
+    padding: var(--spacing-xl);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0;
+    flex: 1;
+}
+
+.price {
+    font-size: var(--font-size-3xl);
+    font-weight: 800;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    white-space: nowrap;
+}
+
+.divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent);
+    margin: var(--spacing-lg) 0;
+}
+
+.content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.description {
+    font-size: var(--font-size-base);
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-lg);
+}
+
+.leafIndicator {
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-md);
+    background: rgba(16, 185, 129, 0.05);
+    border-left: 3px solid var(--color-accent-success);
+    border-radius: var(--radius-sm);
+}
+
+.leafText {
+    margin-top: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.tip {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+    background: rgba(99, 102, 241, 0.05);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+.tipContent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    line-height: 1.6;
+}
+
+.tipIcon {
+    width: 20px;
+    height: 20px;
+    color: var(--color-accent-primary);
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .panel {
+        padding: var(--spacing-lg);
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .title {
+        font-size: var(--font-size-xl);
+    }
+
+    .price {
+        font-size: var(--font-size-2xl);
+    }
+}
