@@ -11,8 +11,8 @@ const nextConfig = {
     // Add trailing slash for GitHub Pages
     trailingSlash: true,
 
-    // Base path for GitHub Pages
-    basePath: '/CostSuan',
+    // Base path for GitHub Pages (only in production)
+    ...(process.env.NODE_ENV === 'production' && { basePath: '/CostSuan' }),
 
     reactStrictMode: true,
 };

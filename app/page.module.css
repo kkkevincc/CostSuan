@@ -110,30 +110,69 @@
 
 @media (max-width: 768px) {
     .main {
-        padding: var(--spacing-lg) var(--spacing-sm);
+        padding: var(--spacing-md) var(--spacing-sm);
+        padding-bottom: 100px;
+        /* More space for footer */
     }
 
     .logo {
-        font-size: 4rem;
+        font-size: 3.5rem;
     }
 
     .title {
         font-size: var(--font-size-3xl);
+        line-height: 1.2;
     }
 
     .subtitle {
-        font-size: var(--font-size-xl);
+        font-size: var(--font-size-lg);
+        margin-top: var(--spacing-xs);
     }
 
     .description {
         font-size: var(--font-size-base);
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .examples {
+        margin-top: var(--spacing-xl);
     }
 
     .exampleTags {
         flex-direction: column;
+        gap: var(--spacing-sm);
     }
 
     .tag {
         width: 100%;
+        padding: var(--spacing-md) var(--spacing-lg);
+        font-size: var(--font-size-base);
+        text-align: center;
+        min-height: 48px;
+        /* Better touch target */
+    }
+}
+
+/* Very small phones */
+@media (max-width: 375px) {
+    .main {
+        padding: var(--spacing-sm);
+    }
+
+    .logo {
+        font-size: 3rem;
+    }
+
+    .title {
+        font-size: var(--font-size-2xl);
+    }
+
+    .subtitle {
+        font-size: var(--font-size-base);
+    }
+
+    .description {
+        font-size: var(--font-size-sm);
+        line-height: 1.6;
     }
 }

@@ -12,8 +12,8 @@
 }
 
 .backButton {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--color-bg-glass);
+    border: 1px solid var(--color-border);
     color: var(--color-text-primary);
     padding: 8px 16px;
     border-radius: 12px;
@@ -23,8 +23,10 @@
 }
 
 .backButton:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: var(--color-bg-secondary);
+    border-color: var(--color-accent);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
 }
 
 .pageTitle {
@@ -66,12 +68,12 @@
 
 .pieSection,
 .barSection {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--color-bg-card);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--color-border);
     border-radius: 16px;
     padding: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-md);
     height: 450px;
     display: flex;
     flex-direction: column;
@@ -116,5 +118,69 @@
 @media (max-width: 1024px) {
     .chartsRow {
         grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .pieSection,
+    .barSection {
+        height: auto;
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing-md) var(--spacing-md) 80px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .backButton {
+        min-height: 44px;
+        /* Better touch target */
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .pageTitle {
+        font-size: var(--font-size-2xl);
+        width: 100%;
+    }
+
+    .aiTag {
+        align-self: flex-start;
+    }
+
+    .chartsRow {
+        gap: var(--spacing-md);
+    }
+
+    .pieSection,
+    .barSection {
+        padding: var(--spacing-md);
+        min-height: 350px;
+    }
+
+    .sectionTitle {
+        font-size: var(--font-size-base);
+    }
+}
+
+@media (max-width: 375px) {
+    .container {
+        padding: var(--spacing-sm) var(--spacing-sm) 80px;
+    }
+
+    .pageTitle {
+        font-size: var(--font-size-xl);
+    }
+
+    .pieSection,
+    .barSection {
+        min-height: 300px;
+        padding: var(--spacing-sm);
     }
 }

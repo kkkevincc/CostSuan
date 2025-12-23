@@ -1,9 +1,13 @@
+'use client';
+
 import SearchInput from '@/components/SearchInput';
+import ThemeToggle from '@/components/ThemeToggle';
 import styles from './page.module.css';
 
 export default function HomePage() {
     return (
         <main className={styles.main}>
+            <ThemeToggle />
             <div className={styles.hero}>
                 <div className={styles.logoContainer}>
                     <div className={styles.logo}>💰</div>

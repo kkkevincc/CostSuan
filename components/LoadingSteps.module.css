@@ -61,6 +61,17 @@
     color: var(--color-text-muted);
 }
 
+.step.pending .stepIndi.card {
+    background: var(--color-bg-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: var(--shadow-lg);
+}
+
 .step.active .stepIndicator {
     background: var(--gradient-primary);
     color: white;

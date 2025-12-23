@@ -9,6 +9,7 @@ import BarChart from '@/components/BarChart';
 import CommentCard from '@/components/CommentCard';
 import DetailPanel from '@/components/DetailPanel';
 import LoadingSteps from '@/components/LoadingSteps';
+import ThemeToggle from '@/components/ThemeToggle';
 import styles from './page.module.css';
 
 function ResultPageContent() {
@@ -97,6 +98,7 @@ function ResultPageContent() {
 
     return (
         <div className={styles.container}>
+            <ThemeToggle />
             <div className={styles.header}>
                 <button onClick={() => router.push('/')} className={styles.backButton}>
                     ← 返回

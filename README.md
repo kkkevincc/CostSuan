@@ -8,13 +8,15 @@ An AI-powered product cost analysis web application that reveals the true cost b
 - 📊 **Interactive Visualization** - ECharts Sunburst chart with drill-down capability
 - 💬 **AI Analysis** - Detailed cost structure with insightful commentary
 - 🎨 **Modern UI** - Glassmorphism design with smooth animations
+- 🌓 **Theme Switching** - Dark/Light mode support
 - 📱 **Responsive** - Works on desktop and mobile devices
 
 ## Tech Stack
 
-- **Frontend**: Next.js 14, React 18, TypeScript
+- **Frontend**: Next.js 16 (Turbopack), React 18, TypeScript
+- **AI**: Google Gemini API
 - **Visualization**: Apache ECharts
-- **Styling**: Modern CSS with custom design system
+- **Styling**: Modern CSS with theme system
 
 ## Getting Started
 
@@ -33,6 +35,31 @@ npm run build
 # Start production server
 npm start
 ```
+
+### Environment Setup
+
+For local development with AI features:
+
+1. **Copy the environment template**:
+   ```bash
+   cp .env.example .env.local
+   ```
+
+2. **Get your Gemini API key**:
+   - Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
+   - Sign in with your Google account
+   - Click "Get API Key" or "Create API Key"
+   - Copy the generated key
+
+3. **Configure `.env.local`**:
+   ```env
+   NEXT_PUBLIC_AI_PROVIDER=gemini
+   NEXT_PUBLIC_GEMINI_API_KEY=your_actual_api_key_here
+   ```
+
+4. **Restart the dev server** to apply the changes
+
+> **Note**: `.env.local` is automatically ignored by git, so your API keys will never be committed to the repository. For GitHub Pages deployment, the API key is stored in GitHub Secrets and used by GitHub Actions.
 
 ### Development
 

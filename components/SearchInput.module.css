@@ -26,9 +26,18 @@
 @media (max-width: 768px) {
     .searchForm {
         max-width: 100%;
+        padding: 0 var(--spacing-sm);
     }
 
     .searchInput {
+        font-size: var(--font-size-base);
+        padding: var(--spacing-md);
+    }
+
+    .submitBtn {
+        min-height: 48px;
+        /* Better touch target */
+        padding: var(--spacing-md) var(--spacing-lg);
         font-size: var(--font-size-base);
     }
 }
