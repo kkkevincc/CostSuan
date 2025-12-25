@@ -1,6 +1,7 @@
 'use client';
 
 import SearchInput from '@/components/SearchInput';
+import Link from 'next/link';
 import ThemeToggle from '@/components/ThemeToggle';
 import styles from './page.module.css';
 
@@ -28,16 +29,16 @@ export default function HomePage() {
 
                 <div className={styles.examples}>
                     <p className={styles.examplesLabel}>试试这些产品：</p>
-                    <div className={styles.tags}>
-                        <a href="/result?product=%E7%BA%A2%E4%B9%8B%E5%B0%8F%E4%BA%B2%E5%87%80%E6%B0%A8%E5%9F%BA%E9%85%B8%E6%B4%81%E9%9D%A2%E4%B9%B3" className={styles.tag}>
+                    <div className={styles.exampleTags}>
+                        <Link href="/result?product=%E7%BA%A2%E4%B9%8B%E5%B0%8F%E4%BA%B2%E5%87%80%E6%B0%A8%E5%9F%BA%E9%85%B8%E6%B4%81%E9%9D%A2%E4%B9%B3" className={styles.tag}>
                             红之小亲净氨基酸洁面乳
-                        </a>
-                        <a href="/result?product=%E5%A7%8B%E7%A5%96%E9%B8%9FAtom%20LT%E8%BF%9E%E5%B8%BD%E5%A4%B9%E5%85%8B" className={styles.tag}>
+                        </Link>
+                        <Link href="/result?product=%E5%A7%8B%E7%A5%96%E9%B8%9FAtom%20LT%E8%BF%9E%E5%B8%BD%E5%A4%B9%E5%85%8B" className={styles.tag}>
                             始祖鸟Atom LT连帽夹克
-                        </a>
-                        <a href="/result?product=SK-II%E7%A5%9E%E4%BB%99%E6%B0%B4" className={styles.tag}>
+                        </Link>
+                        <Link href="/result?product=SK-II%E7%A5%9E%E4%BB%99%E6%B0%B4" className={styles.tag}>
                             SK-II神仙水
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

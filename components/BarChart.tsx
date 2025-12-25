@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
+import { useTheme } from '@/contexts/ThemeContext';
 import { CostNode } from '@/types';
 import styles from './BarChart.module.css';
 
@@ -10,8 +11,13 @@ interface BarChartProps {
 }
 
 export default function BarChart({ data }: BarChartProps) {
+    const { theme } = useTheme();
     const chartRef = useRef<HTMLDivElement>(null);
     const chartInstance = useRef<echarts.ECharts | null>(null);
+
+    const isDark = theme === 'dark';
+    const textColor = isDark ? '#fff' : '#1a1614';
+    const mutedColor = isDark ? '#a0a8c5' : '#4a4542';
 
     useEffect(() => {
         if (!chartRef.current) return;
@@ -75,7 +81,7 @@ export default function BarChart({ data }: BarChartProps) {
                 axisLine: { show: false },
                 axisTick: { show: false },
                 axisLabel: {
-                    color: '#fff',
+                    color: textColor,
                     fontSize: 13,
                     fontWeight: 500,
                     formatter: (value: string) => {
@@ -95,7 +101,7 @@ export default function BarChart({ data }: BarChartProps) {
                         return `{value|¥${params.value}} {percent|${params.data.percentage}%}`;
                     },
                     fontSize: 12,
-                    color: '#fff',
+                    color: textColor,
                     rich: {
                         value: {
                             fontSize: 13,
@@ -104,7 +110,7 @@ export default function BarChart({ data }: BarChartProps) {
                         },
                         percent: {
                             fontSize: 11,
-                            color: '#a0a8c5'
+                            color: mutedColor
                         }
                     }
                 },

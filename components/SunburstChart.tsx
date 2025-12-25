@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import * as echarts from 'echarts';
+import { useTheme } from '@/contexts/ThemeContext';
 import { CostNode } from '@/types';
 import styles from './SunburstChart.module.css';
 
@@ -11,9 +12,17 @@ interface SunburstChartProps {
 }
 
 export default function SunburstChart({ data, onNodeClick }: SunburstChartProps) {
+    const { theme } = useTheme();
     const chartRef = useRef<HTMLDivElement>(null);
     const chartInstance = useRef<echarts.ECharts | null>(null);
     const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+
+    const isDark = theme === 'dark';
+    const textColor = isDark ? '#fff' : '#1a1614';
+    const mutedColor = isDark ? '#a0a8c5' : '#4a4542';
+    const tooltipBg = isDark ? 'rgba(10, 14, 39, 0.95)' : 'rgba(255, 255, 255, 0.95)';
+    const tooltipBorder = isDark ? 'rgba(99, 102, 241, 0.3)' : 'rgba(99, 102, 241, 0.2)';
+    const chartBg = isDark ? 'rgba(10, 14, 39, 0.8)' : 'rgba(255, 255, 255, 0.8)';
 
     useEffect(() => {
         if (!chartRef.current) return;
@@ -39,19 +48,19 @@ export default function SunburstChart({ data, onNodeClick }: SunburstChartProps)
                     const percentage = ((params.value / data.value) * 100).toFixed(1);
                     return `
             <div style="padding: 12px;">
-              <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px; color: #fff;">${params.name}</div>
+              <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px; color: ${textColor};">${params.name}</div>
               <div style="color: #6ee7b7; font-size: 16px; font-weight: 700;">¥${params.value}</div>
-              <div style="color: #a0a8c5; font-size: 12px; margin-top: 4px;">${percentage}%</div>
+              <div style="color: ${mutedColor}; font-size: 12px; margin-top: 4px;">${percentage}%</div>
             </div>
           `;
                 },
-                backgroundColor: 'rgba(10, 14, 39, 0.95)',
-                borderColor: 'rgba(99, 102, 241, 0.3)',
+                backgroundColor: tooltipBg,
+                borderColor: tooltipBorder,
                 borderWidth: 1,
                 borderRadius: 8,
                 padding: 0,
                 textStyle: {
-                    color: '#ffffff',
+                    color: textColor,
                     fontSize: 14
                 }
             },
@@ -67,7 +76,7 @@ export default function SunburstChart({ data, onNodeClick }: SunburstChartProps)
                 avoidLabelOverlap: true,
                 itemStyle: {
                     borderRadius: 8,
-                    borderColor: 'rgba(10, 14, 39, 0.8)',
+                    borderColor: chartBg,
                     borderWidth: 3
                 },
                 label: {
@@ -79,13 +88,13 @@ export default function SunburstChart({ data, onNodeClick }: SunburstChartProps)
                     },
                     fontSize: 12,
                     fontWeight: 500,
-                    color: '#fff',
+                    color: textColor,
                     lineHeight: 16,
                     rich: {
                         name: {
                             fontSize: 13,
                             fontWeight: 600,
-                            color: '#fff'
+                            color: textColor
                         },
                         value: {
                             fontSize: 14,
@@ -94,7 +103,7 @@ export default function SunburstChart({ data, onNodeClick }: SunburstChartProps)
                         },
                         percent: {
                             fontSize: 11,
-                            color: '#a0a8c5'
+                            color: mutedColor
                         }
                     }
                 },
@@ -105,7 +114,7 @@ export default function SunburstChart({ data, onNodeClick }: SunburstChartProps)
                     smooth: false,
                     lineStyle: {
                         width: 1.5,
-                        color: 'rgba(255, 255, 255, 0.3)'
+                        color: isDark ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.2)'
                     }
                 },
                 select: {

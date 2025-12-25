@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import styles from './LoadingSteps.module.css';
 
 const steps = [
-    { id: 1, text: '正在识别产品品类...', duration: 2000 },
-    { id: 2, text: '正在搜索成分表与材质信息...', duration: 3000 },
-    { id: 3, text: '正在查询原料大盘价...', duration: 2500 },
-    { id: 4, text: '正在计算成本结构...', duration: 2000 },
-    { id: 5, text: '正在生成分析报告...', duration: 1500 },
+    { id: 1, text: '正在识别产品品类...', duration: 1000 },
+    { id: 2, text: '正在搜索成分表与材质信息...', duration: 1500 },
+    { id: 3, text: '正在查询原料大盘价...', duration: 1200 },
+    { id: 4, text: '正在计算成本结构...', duration: 1000 },
+    { id: 5, text: '正在生成分析报告...', duration: 800 },
 ];
 
 export default function LoadingSteps() {
@@ -35,8 +35,8 @@ export default function LoadingSteps() {
                     <div
                         key={step.id}
                         className={`${styles.step} ${index < currentStep ? styles.completed :
-                                index === currentStep ? styles.active :
-                                    styles.pending
+                            index === currentStep ? styles.active :
+                                styles.pending
                             }`}
                     >
                         <div className={styles.stepIndicator}>
