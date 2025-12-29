@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  basePath: process.env.NODE_ENV === 'production' ? '/CostSuan' : '',
+  // 只在 GitHub Actions 环境使用 basePath
+  ...(process.env.GITHUB_ACTIONS && { basePath: '/CostSuan' }),
   images: {
     unoptimized: true
   },
