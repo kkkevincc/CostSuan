@@ -51,9 +51,15 @@
 }
 
 .quoteIcon {
-    font-size: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
     flex-shrink: 0;
-    opacity: 0.5;
+    color: var(--color-accent);
+    background: rgba(99, 102, 241, 0.1);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(99, 102, 241, 0.2);
 }
 
 .commentText {
@@ -66,15 +72,32 @@
 
 @media (max-width: 768px) {
     .card {
-        padding: var(--spacing-lg);
+        padding: 14px 16px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
     }
 
     .productName {
-        font-size: var(--font-size-lg);
+        font-size: 18px;
         min-width: auto;
+        width: 100%;
     }
 
     .price {
-        font-size: var(--font-size-xl);
+        font-size: 20px;
+    }
+
+    .quoteIcon {
+        font-size: 12px;
+        padding: 3px 8px;
+    }
+
+    .commentText {
+        font-size: 14px;
+        line-height: 1.7;
     }
 }

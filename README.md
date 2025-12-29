@@ -1,4 +1,4 @@
-# Price Autopsy (价格解剖台)
+# Price Breakdown (价格解剖台)
 
 An AI-powered product cost analysis web application that reveals the true cost breakdown of any consumer product.
 
@@ -89,46 +89,41 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ## Current Implementation
 
-The current version (v1.0 MVP) uses high-quality mock data for demonstration purposes. The application includes:
+The current version features full **Google Gemini AI integration** for real-time product cost analysis. The application includes:
 
 - ✅ Complete frontend with all PRD requirements
+- ✅ **Real-time AI analysis** using Google Gemini API
 - ✅ Interactive Sunburst visualization
-- ✅ Chart-panel linkage
-- ✅ Loading animations
-- ✅ Error handling
-- ✅ Responsive design
-- ✅ 3 diverse product examples
+- ✅ Chart-panel linkage with detailed breakdowns
+- ✅ Multi-step loading animations
+- ✅ Comprehensive error handling
+- ✅ Responsive design with theme support
+- ✅ Share functionality for analysis results
+- ✅ Auto-scrolling hot cases carousel
 
-### Mock Data Products
+### How It Works
 
-1. **红之小亲净氨基酸洁面乳** (Skincare) - Low markup example
-2. **始祖鸟 Atom LT 连帽夹克** (Outdoor apparel) - High markup example
-3. **SK-II 神仙水** (Luxury cosmetics) - High markup example
+1. **User Input**: Enter any product name in the search box
+2. **AI Analysis**: Gemini AI analyzes the product and estimates:
+   - Material and production costs
+   - Marketing and operational expenses
+   - Distribution and logistics costs
+   - Brand markup and profit margins
+3. **Visualization**: Interactive charts display the cost breakdown
+4. **Insights**: AI-generated commentary explains the pricing strategy
+
 
 ## Future Enhancements
 
-### AI Backend Integration
+- 🔄 Additional AI provider support (OpenAI, Claude)
+- 📊 Historical price tracking and trends
+- 🔍 Comparative analysis across similar products
+- 👤 User authentication and saved analyses
+- 📜 Search history with bookmarks
+- 🌍 Multi-language support
+- 📈 More product categories and industries
+- 🎯 Enhanced AI analysis with industry-specific insights
 
-To integrate with real AI backend:
-
-1. Set up FastAPI backend service
-2. Implement AI agent logic with:
-   - Web search API (SerpApi/Google Custom Search)
-   - LLM integration (Doubao/GLM-4)
-   - Cost estimation algorithms
-3. Update `/lib/mockData.ts` API calls to fetch from real endpoint
-4. Add retry logic and timeout handling
-5. Configure environment variables for API keys
-
-### V2 Features
-
-- Hot cases carousel
-- Share/screenshot functionality
-- User authentication
-- Search history
-- More product categories
-- Enhanced AI analysis
-- Multi-language support
 
 ## License
 

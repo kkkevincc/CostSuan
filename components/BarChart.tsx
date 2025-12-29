@@ -27,8 +27,24 @@ export default function BarChart({ data }: BarChartProps) {
             chartInstance.current = echarts.init(chartRef.current);
         }
 
+        // Show empty state when no data - but keep chart instance alive
         if (!data || !data.children || data.children.length === 0) {
-            chartInstance.current.clear();
+            chartInstance.current.setOption({
+                title: {
+                    text: '点击左侧饼图查看细分',
+                    left: 'center',
+                    top: 'middle',
+                    textStyle: {
+                        color: mutedColor,
+                        fontSize: 14,
+                        fontWeight: 'normal'
+                    }
+                },
+                xAxis: { show: false },
+                yAxis: { show: false },
+                grid: { show: false },
+                series: []
+            }, true); // notMerge: true to completely replace previous config
             return;
         }
 
@@ -64,12 +80,14 @@ export default function BarChart({ data }: BarChartProps) {
         }
 
         const option: echarts.EChartsOption = {
+            title: { show: false }, // Clear empty state title
             grid: {
                 left: '5%',
                 right: '25%',
                 top: gridTop,
                 bottom: gridBottom,
-                containLabel: true
+                containLabel: true,
+                show: false
             },
             xAxis: {
                 type: 'value',
@@ -122,7 +140,7 @@ export default function BarChart({ data }: BarChartProps) {
             }]
         };
 
-        chartInstance.current.setOption(option);
+        chartInstance.current.setOption(option, true); // notMerge: true to completely replace
 
         const handleResize = () => {
             chartInstance.current?.resize();
@@ -132,7 +150,7 @@ export default function BarChart({ data }: BarChartProps) {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, [data]);
+    }, [data, theme, textColor, mutedColor]);
 
     // Cleanup on unmount
     useEffect(() => {
@@ -144,22 +162,16 @@ export default function BarChart({ data }: BarChartProps) {
         };
     }, []);
 
-    if (!data || !data.children || data.children.length === 0) {
-        return (
-            <div className={styles.emptyState}>
-                <div className={styles.emptyIcon}>📊</div>
-                <div className={styles.emptyText}>点击左侧饼图查看细分</div>
-            </div>
-        );
-    }
-
+    // Always render the chart container - never unmount it
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <div className={styles.title}>{data.name}</div>
-                <div className={styles.total}>总计 ¥{data.value.toFixed(2)}</div>
-            </div>
-            <div ref={chartRef} style={{ width: '100%', height: '400px' }}></div>
+            {data && (
+                <div className={styles.header}>
+                    <div className={styles.title}>{data.name}</div>
+                    <div className={styles.total}>总计 ¥{data.value.toFixed(2)}</div>
+                </div>
+            )}
+            <div ref={chartRef} style={{ width: '100%', height: data ? '400px' : '300px' }}></div>
         </div>
     );
 }

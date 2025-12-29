@@ -6,7 +6,7 @@ import './globals.css';
 import './themes.css';
 
 export const metadata: Metadata = {
-    title: 'Price Autopsy - 价格解剖台',
+    title: 'Price Breakdown - 价格解剖台',
     description: 'AI-powered product cost analysis tool. Analyze the true cost breakdown of any product.',
     keywords: ['cost analysis', 'price breakdown', '成本分析', '价格解剖'],
 };

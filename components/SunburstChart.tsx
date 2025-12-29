@@ -32,7 +32,8 @@ export default function SunburstChart({ data, onNodeClick }: SunburstChartProps)
             chartInstance.current = echarts.init(chartRef.current);
         }
 
-        // Only show first level children - single layer pie chart
+        // 直接使用 AI 返回的数据，不做前端处理
+        // AI已经在提示词中处理了小分片合并（<2%合并为"其他"）
         const firstLevelData = data.children?.map((child, index) => ({
             name: child.name,
             value: child.value,
@@ -145,7 +146,7 @@ export default function SunburstChart({ data, onNodeClick }: SunburstChartProps)
             }]
         };
 
-        chartInstance.current.setOption(option);
+        chartInstance.current.setOption(option, true); // true = notMerge, 完全替换配置
 
         // Dispatch select action for initially selected item
         if (selectedIndex >= 0) {
@@ -156,13 +157,44 @@ export default function SunburstChart({ data, onNodeClick }: SunburstChartProps)
             });
         }
 
-        // Handle click events
+        // Handle click events with toggle behavior
         const handleClick = (params: any) => {
             if (params.componentType === 'series' && params.seriesType === 'pie') {
                 if (params.data && params.data.originalData) {
-                    setSelectedIndex(params.data.itemIndex);
-                    if (onNodeClick) {
-                        onNodeClick(params.data.originalData);
+                    const clickedIndex = params.data.itemIndex;
+
+                    // Toggle behavior: if clicking the same item, deselect it
+                    if (selectedIndex === clickedIndex) {
+                        // Deselect - first unselect in chart, then update state
+                        chartInstance.current?.dispatchAction({
+                            type: 'unselect',
+                            seriesIndex: 0,
+                            dataIndex: clickedIndex
+                        });
+                        setSelectedIndex(-1);
+                        // Notify parent with null to clear details
+                        if (onNodeClick) {
+                            onNodeClick(null);
+                        }
+                    } else {
+                        // Unselect previous item first if any
+                        if (selectedIndex >= 0) {
+                            chartInstance.current?.dispatchAction({
+                                type: 'unselect',
+                                seriesIndex: 0,
+                                dataIndex: selectedIndex
+                            });
+                        }
+                        // Select new item
+                        chartInstance.current?.dispatchAction({
+                            type: 'select',
+                            seriesIndex: 0,
+                            dataIndex: clickedIndex
+                        });
+                        setSelectedIndex(clickedIndex);
+                        if (onNodeClick) {
+                            onNodeClick(params.data.originalData);
+                        }
                     }
                 }
             }
@@ -180,7 +212,7 @@ export default function SunburstChart({ data, onNodeClick }: SunburstChartProps)
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, [data, onNodeClick, selectedIndex]);
+    }, [data, onNodeClick, selectedIndex, theme, isDark, textColor, mutedColor, tooltipBg, tooltipBorder, chartBg]);
 
     // Cleanup on unmount
     useEffect(() => {

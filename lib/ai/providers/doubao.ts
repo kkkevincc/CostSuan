@@ -1,7 +1,7 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { AIProvider, AnalysisResult } from '../types';
 import { AI_CONFIG } from '@/config/ai';
 
+// 使用与 Gemini 相同的提示词（包含小分片合并逻辑）
 const ANALYSIS_PROMPT = `你是一位资深的产品成本分析专家，拥有深厚的供应链知识和行业洞察力。你的任务是深入分析商品的真实成本结构，揭示定价背后的秘密，给用户带来"原来如此"的震撼体验。
 
 商品名称：{PRODUCT_NAME}
@@ -103,118 +103,113 @@ const ANALYSIS_PROMPT = `你是一位资深的产品成本分析专家，拥有�
 
 只返回JSON，不要包含markdown代码块标记或其他说明文字。`;
 
-export class GeminiProvider implements AIProvider {
-    private client: GoogleGenerativeAI;
+export class DoubaoProvider implements AIProvider {
+    private apiKey: string;
     private model: string;
+    private baseURL: string;
 
     constructor() {
-        const apiKey = AI_CONFIG.gemini.apiKey;
+        this.apiKey = AI_CONFIG.doubao.apiKey;
+        this.model = AI_CONFIG.doubao.model;
+        this.baseURL = 'https://ark.cn-beijing.volces.com/api/v3';
 
-        if (!apiKey) {
-            throw new Error('Gemini API key not configured. Please set NEXT_PUBLIC_GEMINI_API_KEY');
+        if (!this.apiKey) {
+            throw new Error('Doubao API key is not configured');
         }
-
-        this.client = new GoogleGenerativeAI(apiKey);
-        this.model = AI_CONFIG.gemini.model;
     }
 
     async analyze(productName: string): Promise<AnalysisResult> {
+        const prompt = ANALYSIS_PROMPT.replace('{PRODUCT_NAME}', productName);
+
         try {
-            const model = this.client.getGenerativeModel({
-                model: this.model,
-                generationConfig: {
-                    maxOutputTokens: 8192,      // 允许更长的输出
-                    temperature: 0.7,            // 适中的创造性
-                    topP: 0.95,                  // 多样性控制
-                    topK: 40,                    // 候选词数量
-                }
-            });
-            const prompt = ANALYSIS_PROMPT.replace('{PRODUCT_NAME}', productName);
-
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            const text = response.text();
-
-            // Log raw response in development
             if (process.env.NODE_ENV === 'development') {
-                console.log('[Gemini] Raw response length:', text.length);
-                console.log('[Gemini] Raw response preview:', text.substring(0, 300));
+                console.log('[Doubao] Analyzing product:', productName);
             }
 
-            // Extract JSON from response (remove markdown code blocks if present)
+            // 使用 OpenAI 兼容格式
+            const response = await fetch(`${this.baseURL}/chat/completions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.apiKey}`,
+                },
+                body: JSON.stringify({
+                    model: this.model,
+                    max_completion_tokens: 65535,   // 允许更长的输出，与 Gemini 对齐
+                    reasoning_effort: 'medium',      // 平衡速度和质量
+                    messages: [
+                        {
+                            role: 'user',
+                            content: prompt
+                        }
+                    ]
+                })
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('[Doubao] API error:', response.status, errorText);
+                throw new Error(`Doubao API error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const text = data.choices[0].message.content;
+
+            if (process.env.NODE_ENV === 'development') {
+                console.log('[Doubao] Raw response length:', text.length);
+                console.log('[Doubao] Raw response preview:', text.substring(0, 300));
+            }
+
+            // JSON 提取逻辑（与 Gemini 相同）
             let jsonText = text.trim();
 
-            // Remove markdown code blocks
+            // 移除 markdown 代码块
             jsonText = jsonText.replace(/^```json\s*/g, '').replace(/^```\s*/g, '');
             jsonText = jsonText.replace(/\s*```$/g, '');
 
-            // Find JSON object boundaries
+            // 查找 JSON 边界
             const jsonStart = jsonText.indexOf('{');
             const jsonEnd = jsonText.lastIndexOf('}');
 
             if (jsonStart === -1 || jsonEnd === -1) {
-                console.error('[Gemini] No JSON object found in response');
+                console.error('[Doubao] No JSON object found in response');
                 throw new Error('AI response does not contain valid JSON');
             }
 
             jsonText = jsonText.substring(jsonStart, jsonEnd + 1);
 
-            // Log extracted JSON in development
             if (process.env.NODE_ENV === 'development') {
-                console.log('[Gemini] Extracted JSON preview:', jsonText.substring(0, 200));
+                console.log('[Doubao] Extracted JSON preview:', jsonText.substring(0, 200));
             }
 
-            const data: AnalysisResult = JSON.parse(jsonText);
+            const result: AnalysisResult = JSON.parse(jsonText);
 
-            // Assign colors to chart data
-            this.assignColors(data);
+            // 添加颜色
+            this.assignColors(result);
 
-            return data;
+            return result;
         } catch (error) {
-            console.error('Gemini analysis error:', error);
+            console.error('[Doubao] Analysis error:', error);
             if (error instanceof SyntaxError) {
-                console.error('[Gemini] JSON Parse Error - the AI response may contain invalid JSON format');
+                console.error('[Doubao] JSON Parse Error - the AI response may contain invalid JSON format');
             }
-            throw new Error('Failed to analyze product with Gemini AI');
+            throw new Error('Failed to analyze product with Doubao AI');
         }
     }
 
     private assignColors(data: AnalysisResult) {
         const colorPalette = [
-            '#5ac8fa', // 蓝色
-            '#ff6b9d', // 粉红
-            '#b0b3c5', // 灰色
-            '#ffd60a', // 黄色
-            '#34c759', // 绿色
-            '#ff9500', // 橙色
+            '#5ac8fa', '#007aff', '#5856d6', '#af52de',
+            '#ff2d55', '#ff3b30', '#ff9500', '#ffcc00',
+            '#4cd964', '#34c759'
         ];
 
-        // Assign colors to first level
-        if (data.chart_data.children) {
+        if (data.chart_data && data.chart_data.children) {
             data.chart_data.children.forEach((child, index) => {
                 child.itemStyle = {
                     color: colorPalette[index % colorPalette.length]
                 };
-
-                // Assign similar colors to second level (lighter shade)
-                if (child.children) {
-                    const baseColor = colorPalette[index % colorPalette.length];
-                    child.children.forEach((subChild, subIndex) => {
-                        subChild.itemStyle = {
-                            color: this.adjustColorBrightness(baseColor, 20 + subIndex * 10)
-                        };
-                    });
-                }
             });
         }
-    }
-
-    private adjustColorBrightness(hex: string, percent: number): string {
-        const num = parseInt(hex.replace('#', ''), 16);
-        const amt = Math.round(2.55 * percent);
-        const R = Math.min(255, (num >> 16) + amt);
-        const G = Math.min(255, ((num >> 8) & 0x00FF) + amt);
-        const B = Math.min(255, (num & 0x0000FF) + amt);
-        return `#${(0x1000000 + (R << 16) + (G << 8) + B).toString(16).slice(1)}`;
     }
 }

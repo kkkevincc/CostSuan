@@ -1,28 +1,17 @@
 export const AI_CONFIG = {
-    // Current AI provider: 'gemini' | 'openai' | 'claude'
-    provider: (process.env.NEXT_PUBLIC_AI_PROVIDER || 'gemini') as 'gemini' | 'openai' | 'claude',
-
     gemini: {
         apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY || '',
-        model: 'gemini-2.0-flash-exp',
+        model: 'models/gemini-3-flash-preview',
     },
-
-    openai: {
-        apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY || '',
-        model: 'gpt-4',
-    },
-
-    claude: {
-        apiKey: process.env.NEXT_PUBLIC_CLAUDE_API_KEY || '',
-        model: 'claude-3-opus-20240229',
+    doubao: {
+        apiKey: process.env.NEXT_PUBLIC_DOUBAO_API_KEY || '',
+        model: 'doubao-seed-1-6-251015',
     },
 };
 
-export function getActiveProvider() {
-    return AI_CONFIG.provider;
-}
+export type AIRegion = 'overseas' | 'mainland';
 
-export function getActiveConfig() {
-    const provider = getActiveProvider();
-    return AI_CONFIG[provider];
+export function getDefaultRegion(): AIRegion {
+    // 默认为国内
+    return 'mainland';
 }

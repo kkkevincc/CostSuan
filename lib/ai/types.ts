@@ -5,6 +5,7 @@ export interface AnalysisResult {
     retail_price: number;
     comment: string;
     brand_markup: number;
+    markup_level?: 'low' | 'medium' | 'high';
     chart_data: CostNode;
 }
 

@@ -5,7 +5,6 @@
     justify-content: center;
     padding: var(--spacing-xl) var(--spacing-lg);
     padding-bottom: 80px;
-    /* Space for disclaimer footer */
 }
 
 .hero {
@@ -33,7 +32,7 @@
 
     0%,
     100% {
-        transform: translateY(0px);
+        transform: translateY(0);
     }
 
     50% {
@@ -71,48 +70,124 @@
     animation: fadeIn 1.6s ease-out;
 }
 
-.examples {
+/* 轮播容器 */
+.carouselContainer {
     margin-top: var(--spacing-2xl);
-    animation: fadeIn 1.8s ease-out;
+    width: 100vw;
+    max-width: 1200px;
+    overflow: hidden;
+    position: relative;
+    padding: var(--spacing-md) 0;
 }
 
 .examplesLabel {
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
-    margin-bottom: var(--spacing-md);
-}
-
-.exampleTags {
+    margin-bottom: var(--spacing-lg);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
+    align-items: center;
     justify-content: center;
+    gap: var(--spacing-sm);
 }
 
-.tag {
-    padding: var(--spacing-sm) var(--spacing-md);
+.autoPlay {
+    font-size: 11px;
+    color: var(--color-accent);
+    background: rgba(99, 102, 241, 0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* 走马灯效果 */
+.marquee {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    /* 淡入淡出遮罩效果 */
+    mask-image: linear-gradient(to right,
+            transparent,
+            black 10%,
+            black 90%,
+            transparent);
+    -webkit-mask-image: linear-gradient(to right,
+            transparent,
+            black 10%,
+            black 90%,
+            transparent);
+}
+
+.marqueeContent {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+    /* 线性滚动动画 */
+    animation: scroll 40s linear infinite;
+    will-change: transform;
+}
+
+.marqueeContent.paused {
+    animation-play-state: paused;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        /* 移动整个内容宽度的一半（因为内容重复了2次） */
+        transform: translateX(-50%);
+    }
+}
+
+/* 轮播卡片 */
+.carouselItem {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
     background: var(--color-bg-glass);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-md);
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-sm);
+    border-radius: var(--radius-xl);
     text-decoration: none;
     transition: all var(--transition-base);
+    cursor: pointer;
+    white-space: nowrap;
 }
 
-.tag:hover {
-    border-color: var(--color-accent-primary);
+.carouselItem:hover {
+    border-color: var(--accent-color, var(--color-accent));
+    transform: translateY(-5px) scale(1.05);
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.2),
+        0 0 15px var(--accent-color, rgba(99, 102, 241, 0.5));
+    background: rgba(255, 255, 255, 0.08);
+    z-index: 10;
+}
+
+.itemEmoji {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.itemName {
     color: var(--color-text-primary);
-    box-shadow: var(--shadow-glow);
-    transform: translateY(-2px);
+    font-weight: 600;
+    font-size: var(--font-size-base);
 }
 
 @media (max-width: 768px) {
     .main {
         padding: var(--spacing-md) var(--spacing-sm);
         padding-bottom: 100px;
-        /* More space for footer */
     }
 
     .logo {
@@ -124,36 +199,28 @@
         line-height: 1.2;
     }
 
-    .subtitle {
-        font-size: var(--font-size-lg);
-        margin-top: var(--spacing-xs);
-    }
-
-    .description {
-        font-size: var(--font-size-base);
-        margin-bottom: var(--spacing-xl);
-    }
-
-    .examples {
+    .carouselContainer {
+        width: 100%;
         margin-top: var(--spacing-xl);
     }
 
-    .exampleTags {
-        flex-direction: column;
-        gap: var(--spacing-sm);
+    .marqueeContent {
+        animation-duration: 30s;
     }
 
-    .tag {
-        width: 100%;
-        padding: var(--spacing-md) var(--spacing-lg);
-        font-size: var(--font-size-base);
-        text-align: center;
-        min-height: 48px;
-        /* Better touch target */
+    .carouselItem {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .itemEmoji {
+        font-size: 1.3rem;
+    }
+
+    .itemName {
+        font-size: var(--font-size-sm);
     }
 }
 
-/* Very small phones */
 @media (max-width: 375px) {
     .main {
         padding: var(--spacing-sm);
@@ -174,5 +241,14 @@
     .description {
         font-size: var(--font-size-sm);
         line-height: 1.6;
+    }
+
+    .carouselItem {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 13px;
+    }
+
+    .itemEmoji {
+        font-size: 1.2rem;
     }
 }

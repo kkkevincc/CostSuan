@@ -33,6 +33,9 @@
 
     /* Background Animation */
     --bg-radial: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+    --bg-radial-color: rgba(99, 102, 241, 0.15);
+    --bg-radial-color-2: rgba(236, 72, 153, 0.1);
+    --bg-radial-color-3: rgba(139, 92, 246, 0.1);
 }
 
 [data-theme='light'] {
@@ -69,4 +72,7 @@
 
     /* Background Animation - Visible gradient */
     --bg-radial: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.12) 0%, rgba(236, 72, 153, 0.08) 40%, transparent 70%);
+    --bg-radial-color: rgba(139, 92, 246, 0.15);
+    --bg-radial-color-2: rgba(236, 72, 153, 0.12);
+    --bg-radial-color-3: rgba(99, 102, 241, 0.1);
 }

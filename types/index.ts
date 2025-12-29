@@ -1,4 +1,4 @@
-// TypeScript interfaces for Price Autopsy application
+// TypeScript interfaces for Price Breakdown application
 
 export interface ItemStyle {
     color?: string;
