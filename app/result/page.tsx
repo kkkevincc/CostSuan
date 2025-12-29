@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ProductData, CostNode } from '@/types';
+import { createAIProvider } from '@/lib/ai/factory';
 import LoadingSteps from '@/components/LoadingSteps';
 import CommentCard from '@/components/CommentCard';
 import SunburstChart from '@/components/SunburstChart';
@@ -51,75 +52,29 @@ function ResultPageContent() {
                 hasCalledRef.current = true;
 
                 if (process.env.NODE_ENV === 'development') {
-                    console.log('[Result] Using streaming API, region:', region);
+                    console.log('[Result] Analyzing product:', productName, 'Region:', region);
                 }
 
-                // 使用流式 API
-                const response = await fetch('/api/analyze', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
+                // 直接调用 AI provider
+                const aiProvider = createAIProvider(region);
+                const result = await aiProvider.analyze(productName);
+
+                // 转换为 ProductData 格式
+                const productData: ProductData = {
+                    meta: {
+                        product_id: productId,
+                        product_name: result.product_name,
+                        retail_price: result.retail_price,
+                        comment: result.comment,
+                        brand_markup: result.brand_markup,
+                        markup_level: result.markup_level,
                     },
-                    body: JSON.stringify({
-                        productName,
-                        region,
-                    }),
-                });
+                    chart_data: result.chart_data,
+                };
 
-                if (!response.ok) {
-                    throw new Error('分析请求失败');
-                }
-
-                const reader = response.body?.getReader();
-                const decoder = new TextDecoder();
-
-                if (!reader) {
-                    throw new Error('无法读取响应流');
-                }
-
-                // 处理流式数据
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-
-                    const chunk = decoder.decode(value);
-                    const lines = chunk.split('\n');
-
-                    for (const line of lines) {
-                        if (line.startsWith('data: ')) {
-                            const data = line.slice(6);
-
-                            try {
-                                const parsed = JSON.parse(data);
-
-                                if (parsed.type === 'progress') {
-                                    setProgressMessage(parsed.message);
-                                } else if (parsed.type === 'result') {
-                                    // 转换为 ProductData 格式
-                                    const productData: ProductData = {
-                                        meta: {
-                                            product_id: productId,
-                                            product_name: parsed.data.product_name,
-                                            retail_price: parsed.data.retail_price,
-                                            comment: parsed.data.comment,
-                                            brand_markup: parsed.data.brand_markup,
-                                            markup_level: parsed.data.markup_level,
-                                        },
-                                        chart_data: parsed.data.chart_data,
-                                    };
-
-                                    setData(productData);
-                                    setIsAIGenerated(true);
-                                    setLoading(false);
-                                } else if (parsed.type === 'error') {
-                                    throw new Error(parsed.message);
-                                }
-                            } catch (e) {
-                                // 忽略解析错误
-                            }
-                        }
-                    }
-                }
+                setData(productData);
+                setIsAIGenerated(true);
+                setLoading(false);
             } catch (err: any) {
                 console.error('Error analyzing product:', err);
                 setError(err.message || '分析失败，请稍后重试');
